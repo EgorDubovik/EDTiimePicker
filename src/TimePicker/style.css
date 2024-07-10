@@ -31,3 +31,7 @@
    padding: 0 8px;
    position: relative;
 }
+
+.picker-wheel-item.active {
+   opacity: 1;
+}
