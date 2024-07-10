@@ -1,0 +1,33 @@
+.picker-wrapper{
+   display: flex;
+   justify-content: center;
+   overflow: hidden;
+   user-select: none;
+   -webkit-user-select: none;
+   -moz-user-select: none;
+}
+
+.picker-wheel {
+   position: relative;
+   margin: 0 5px;
+}
+
+.picker-wheel-window {
+   position: absolute;
+   top: 50%;
+   transform: translateY(-50%);
+   left: 0;
+   right: 0;
+   border-top: 2px solid #2867f9;
+   border-bottom: 2px solid #2867f9;
+}
+
+.picker-wheel-item {
+   cursor: pointer;
+   display: flex;
+   justify-items: end;
+   align-items: center;
+   opacity: 0.5;
+   padding: 0 8px;
+   position: relative;
+}
