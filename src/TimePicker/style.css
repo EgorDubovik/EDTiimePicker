@@ -35,3 +35,7 @@
 .picker-wheel-item.active {
    opacity: 1;
 }
+.picker-divider {
+   display: flex;
+   align-items: center;
+}

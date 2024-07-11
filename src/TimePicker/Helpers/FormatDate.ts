@@ -60,15 +60,15 @@ const formatDate = (date: Date, format: string) => {
 		DD: zeroPad(date.getDate()),
 		D: date.getDate(),
 		HH: zeroPad(date.getHours()),
+		hh: zeroPad(date.getHours() % 12 || 12),
 		mm: zeroPad(date.getMinutes()),
 		m: date.getMinutes(),
 		ss: zeroPad(date.getSeconds()),
 	};
 
 	return format.replace(
-      /YYYY|YY|MMMM|MMM|MM|M|DDDD|DDD|DD|D|HH|mm|m|ss/g,
+      /YYYY|YY|MMMM|MMM|MM|M|DDDD|DDD|DD|D|HH|hh|mm|m|ss/g,
       (match) => replacements[match as keyof typeof replacements].toString()
    );
 };
-
 export { formatDate };
