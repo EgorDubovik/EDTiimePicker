@@ -28,7 +28,8 @@ const getDays = (date: Date, format = "DD") => {
 	return result;
 };
 
-const getHours = (date: Date, format = "hh") => {
+const getHours = (date: Date, format:string) => {
+	format = format ?? "hh";
 	let currentHour = date.getHours();
 	let hours = [];
 	for (let i = -15; i < 15; i++) {
@@ -58,7 +59,8 @@ const getHours = (date: Date, format = "hh") => {
 	return hours;
 };
 
-const getMinutes = (date: Date, format = "mm" ,step = 15) => {
+const getMinutes = (date: Date, format:string ,step = 15) => {
+	format = format ?? "mm";
 	let currentMinute = date.getMinutes();
 	const arraySize = 60;
 	const minutes = [];

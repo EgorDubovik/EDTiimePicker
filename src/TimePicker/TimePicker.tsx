@@ -5,19 +5,20 @@ import { useState } from 'react';
 
 const TimePicker = () => {
    const [currenDate, setCurrentDate] = useState(new Date());
-
+   const itemsView = 3;
+   const itemHeight = 40;
    return (
-      <div className="picker-wrapper" style={{ height: "120px" }}>
+      <div className="picker-wrapper" style={{ height: (itemHeight*itemsView)+"px" }}>
          <PickerWheel 
             onGetItems={getHours}
             currentDate={currenDate}
-            textFormat="HH"
+            
          />
          <div className="picker-divider">:</div>
          <PickerWheel 
             onGetItems={getMinutes}
             currentDate={currenDate}
-            textFormat="mm"
+            textItemStep={10}
          />
       </div>
    );

@@ -2,10 +2,11 @@ import { useEffect, useState, useRef } from "react";
 const PickerWheel = (props:any) => {
    
    const onGetItems = props.onGetItems;
-   const textFormat = props.textFormat || 'text';
+   const textFormat = props.textFormat || null;
+   const textItemStep = props.textItemStep || 1;
+   
    const currenDate = new Date(props.currentDate) || new Date();
-   console.log(currenDate);
-   const [items, setItems] = useState(onGetItems(currenDate, textFormat));
+   const [items, setItems] = useState(onGetItems(currenDate, textFormat, textItemStep));
    const viewItems = props.viewItems || 3;
    const itemsView = viewItems % 2 === 0 ? viewItems / 2 : (viewItems - 1) / 2;
    const itemHeight = props.itemHeight || 40;
@@ -25,7 +26,7 @@ const PickerWheel = (props:any) => {
    }
 
    useEffect(() => {
-      setItems(onGetItems(getValue()));
+      setItems(onGetItems(getValue(), textFormat, textItemStep));
       const newMarginTopIndex = getMarginTopIndex();
       setMarginTopIndex(newMarginTopIndex);
       setMarginTop(newMarginTopIndex * itemHeight);
