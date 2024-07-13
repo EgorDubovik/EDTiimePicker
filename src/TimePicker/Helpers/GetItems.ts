@@ -1,5 +1,46 @@
 import { formatDate } from "./FormatDate";
 
+const getYears = (date: Date, format = "YYYY") => {
+	let currentYear = date.getFullYear();
+	let years = [];
+	for (let i = currentYear - 15; i < currentYear + 15; i++) {
+		// Добавить фунцию для определения количества дней в месяце
+		// что бы с 29 февраля не было проблем при перехоже на год где 28 февраля
+		// так же как и при изменения месяцы поставить проверку на количство дней в месяце
+		let newDate = new Date(date);
+		newDate.setFullYear(i);
+		years.push({
+			text: formatDate(newDate, format),
+			value: newDate,
+			isSelected: newDate.getFullYear() === currentYear,
+		});
+	}
+	return years;
+};
+
+const getMonths = (date: Date, format = "MMMM") => {
+	let currentMonth = date.getMonth();
+	let months = [];
+	for (let i = -15; i < 15; i++) {
+		let newDate = new Date(date);
+		let currentYear = newDate.getFullYear();
+		let currentDay = newDate.getDate();
+		let tempDate = new Date(currentYear, currentMonth + i + 1, 0);
+		let daysInNewMonth = tempDate.getDate();
+		if (currentDay > daysInNewMonth) {
+			newDate.setDate(daysInNewMonth);
+		}
+		newDate.setMonth(currentMonth + i);
+		newDate.setFullYear(currentYear);
+		months.push({
+			text: formatDate(newDate, format),
+			value: newDate,
+			isSelected: newDate.getMonth() === currentMonth,
+		});
+	}
+	return months;
+};
+
 const getDays = (date: Date, format = "DD") => {
 	let currentMonth = date.getMonth();
 	let currentYear = date.getFullYear();
@@ -28,7 +69,7 @@ const getDays = (date: Date, format = "DD") => {
 	return result;
 };
 
-const getHours = (date: Date, format:string) => {
+const getHours = (date: Date, format: string) => {
 	format = format ?? "hh";
 	let currentHour = date.getHours();
 	let hours = [];
@@ -59,7 +100,7 @@ const getHours = (date: Date, format:string) => {
 	return hours;
 };
 
-const getMinutes = (date: Date, format:string ,step = 15) => {
+const getMinutes = (date: Date, format: string, step = 15) => {
 	format = format ?? "mm";
 	let currentMinute = date.getMinutes();
 	const arraySize = 60;
@@ -86,4 +127,28 @@ const getMinutes = (date: Date, format:string ,step = 15) => {
 	return [...minutes, ...minutes, ...minutes];
 };
 
-export { getDays, getHours, getMinutes};
+const getDaysNameArray = (date: Date, format:string) => {
+	format = format ?? "DDD, MMM DD";
+	const today = new Date();
+	const datesArray = [];
+	for (let i = -15; i < 15; i++) {
+		var newDate = new Date(date.getTime() + i * 24 * 60 * 60 * 1000);
+		const result =
+			newDate.getDate() === today.getDate() &&
+			newDate.getMonth() === today.getMonth() &&
+			newDate.getFullYear() === today.getFullYear()
+				? `Today`
+				: formatDate(newDate, format);
+		datesArray.push({
+			text: result,
+			value: newDate,
+			isSelected:
+				newDate.getDate() === date.getDate() &&
+				newDate.getMonth() === date.getMonth() &&
+				newDate.getFullYear() === date.getFullYear(),
+		});
+	}
+	return datesArray;
+};
+
+export { getDays, getHours, getMinutes, getMonths, getYears, getDaysNameArray };
