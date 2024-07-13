@@ -127,7 +127,7 @@ const getMinutes = (date: Date, format: string, step = 15) => {
 	return [...minutes, ...minutes, ...minutes];
 };
 
-const getDaysNameArray = (date: Date, format:string) => {
+const getDaysNameArray = (date: Date, format: string) => {
 	format = format ?? "DDD, MMM DD";
 	const today = new Date();
 	const datesArray = [];
@@ -151,4 +151,25 @@ const getDaysNameArray = (date: Date, format:string) => {
 	return datesArray;
 };
 
-export { getDays, getHours, getMinutes, getMonths, getYears, getDaysNameArray };
+const getAmPm = (date: Date) => {
+	let hours = date.getHours();
+	let index = hours >= 12 ? 1 : 0;
+	let am = new Date(date);
+	let pm = new Date(date);
+	const items = [
+		{
+			text: "AM",
+			value: hours >= 12 ? new Date(am.setHours(hours - 12)) : am,
+			isSelected: index === 0,
+		},
+		{
+			text: "PM",
+			value: hours <= 12 ? new Date(pm.setHours(hours + 12)) : pm,
+			isSelected: index === 1,
+		},
+	];
+
+	return items;
+};
+
+export { getDays, getHours, getMinutes, getMonths, getYears, getDaysNameArray, getAmPm };

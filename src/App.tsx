@@ -9,7 +9,7 @@ function App() {
                currentDate={"2021-09-20T10:00:00"} 
                options={{ 
                   timeFormat: "hh:mm A",
-                }}
+               }}
             />
 			</div>
 		</>

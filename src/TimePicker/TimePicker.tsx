@@ -7,6 +7,7 @@ import {
 	getMonths,
 	getYears,
 	getDaysNameArray,
+   getAmPm
 } from "./Helpers/GetItems";
 import React, { useState } from "react";
 
@@ -38,7 +39,7 @@ const TimePicker = (prop: ITimePicker) => {
 	const showDate = prop.options?.showDate === false ? false : true;
 
 	const splitTimeFormat = (format: string): string[] => {
-		const regex = /(HH|hh|mm|ss|A|a)/g;
+		const regex = /(HH|H|hh|h|mm|m|ss|A|a)/g;
 		const matches = format.match(regex);
 		const remaining = format.replace(regex, "").trim();
 		const remainingParts = remaining
@@ -49,7 +50,6 @@ const TimePicker = (prop: ITimePicker) => {
 
 	const getWeelsArray = () => {
 		const wheelArray = new Array();
-		console.log(daysNameWheel);
 		if (showDate) {
 			if (daysNameWheel)
 				wheelArray.push({
@@ -90,7 +90,7 @@ const TimePicker = (prop: ITimePicker) => {
 		if (showTime) {
 			const timeWheels = splitTimeFormat(timeFormat);
          timeWheels.forEach((timeWheel) => {
-            if (timeWheel === "HH" || timeWheel === "hh")
+            if (timeWheel === "HH" || timeWheel === "hh" || timeWheel === "H" || timeWheel === "h")
                wheelArray.push({
                   onGetItems: getHours,
                   textFormat: timeWheel,
@@ -101,8 +101,11 @@ const TimePicker = (prop: ITimePicker) => {
                   textFormat: timeWheel,
                   textItemStep: 15,
                });
-            else if (timeWheel === "A" || timeWheel === "a")
-               console.log("AM/PM");
+            else if (timeWheel === "A" && timeFormat.includes("h"))
+               wheelArray.push({
+                  onGetItems: getAmPm,
+                  isLoop: false,
+               });
          });
 		}
 
@@ -125,9 +128,10 @@ const TimePicker = (prop: ITimePicker) => {
 						currentDate={currenDate}
 						viewItems={itemsView}
 						itemHeight={itemHeight}
+                  isLoop={item.isLoop}
 					/>
 					{(item.textFormat === "hh" || item.textFormat === "HH") &&
-						index < wheelArray.length && (
+						index < wheelArray.length-1 && (
 							<div className="picker-divider">:</div>
 						)}
 				</React.Fragment>
