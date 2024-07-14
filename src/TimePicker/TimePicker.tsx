@@ -9,12 +9,12 @@ import {
 	getDaysNameArray,
    getAmPm
 } from "./Helpers/GetItems";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface ITimePicker {
 	currentDate?: Date | string | null;
 	options?: {
-		itemsView?: number;
+		viewItems?: number;
 		itemsHeight?: number;
 		daysNameFormat?: string;
 		timeFormat?: string;
@@ -29,7 +29,9 @@ const TimePicker = (prop: ITimePicker) => {
 	const [currenDate, setCurrentDate] = useState(
 		prop.currentDate || new Date()
 	);
-	const itemsView = prop.options?.itemsView || 3;
+	const viewItems = prop.options?.viewItems || 3;
+   const itemsView = viewItems % 2 === 0 ? viewItems / 2 : (viewItems - 1) / 2;
+   
 	const itemHeight = prop.options?.itemsHeight || 40;
 	const daysNameWheel = prop.options?.daysNameWheels === false ? false : true;
 	const daysNameFormat = prop.options?.daysNameFormat || "DDDD, MMM DD";
@@ -114,19 +116,28 @@ const TimePicker = (prop: ITimePicker) => {
 
 	const wheelArray = getWeelsArray();
 	
+   useEffect(() => {
+      console.log(currenDate);
+   }, [currenDate]);
+
+   const updateCurrentDate = (date: Date) => {
+      setCurrentDate(date);
+   }
+
 	return (
 		<div
 			className="picker-wrapper"
-			style={{ height: itemHeight * itemsView + "px" }}
+			style={{ height: itemHeight * viewItems + "px" }}
 		>
 			{wheelArray.map((item, index) => (
 				<React.Fragment key={index}>
 					<PickerWheel
 						onGetItems={item.onGetItems}
+                  updateDate={updateCurrentDate}
 						textFormat={item.textFormat}
 						textItemStep={item.textItemStep}
 						currentDate={currenDate}
-						viewItems={itemsView}
+						itemsView={itemsView}
 						itemHeight={itemHeight}
                   isLoop={item.isLoop}
 					/>

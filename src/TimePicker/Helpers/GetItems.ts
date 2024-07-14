@@ -168,7 +168,6 @@ const getAmPm = (date: Date) => {
 			isSelected: index === 1,
 		},
 	];
-
 	return items;
 };
 
