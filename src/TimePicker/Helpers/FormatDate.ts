@@ -73,4 +73,30 @@ const formatDate = (date: Date, format: string) => {
       (match) => replacements[match as keyof typeof replacements].toString()
    );
 };
-export { formatDate };
+
+const nomrolizeDate = (date:Date, minutesStep:number) => {
+	let hours = date.getHours();
+	const minutes = date.getMinutes();
+	const newDate = new Date(date);
+	let normalizedMinutes = Math.ceil(minutes / minutesStep) * minutesStep;
+	if(normalizedMinutes === 60){
+		normalizedMinutes = 0;
+		hours++;
+	}
+	newDate.setHours(hours);
+	newDate.setMinutes(normalizedMinutes);
+	newDate.setSeconds(0);
+	return newDate;
+}
+
+const splitTimeFormat = (format: string): string[] => {
+	const regex = /(HH|H|hh|h|mm|m|ss|A|a)/g;
+	const matches = format.match(regex);
+	const remaining = format.replace(regex, "").trim();
+	const remainingParts = remaining
+		? remaining.split(" ").filter((part) => part)
+		: [];
+	return matches ? [...matches, ...remainingParts] : remainingParts;
+};
+
+export { formatDate, nomrolizeDate, splitTimeFormat };

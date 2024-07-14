@@ -9,6 +9,7 @@ import {
 	getDaysNameArray,
    getAmPm
 } from "./Helpers/GetItems";
+import { nomrolizeDate, splitTimeFormat } from "./Helpers/FormatDate";
 import React, { useEffect, useState } from "react";
 
 interface ITimePicker {
@@ -19,6 +20,7 @@ interface ITimePicker {
 		daysNameFormat?: string;
 		timeFormat?: string;
 		dateWheelsFormat?: string;
+      minutesStep?: number;
 		showTime?: boolean;
 		showDate?: boolean;
 		daysNameWheels?: boolean;
@@ -26,13 +28,15 @@ interface ITimePicker {
 }
 
 const TimePicker = (prop: ITimePicker) => {
+
+   const minutesStep = prop.options?.minutesStep || 15;
 	const [currenDate, setCurrentDate] = useState(
-		prop.currentDate || new Date()
+      nomrolizeDate(new Date(prop.currentDate || new Date()), minutesStep)
 	);
 	const viewItems = prop.options?.viewItems || 3;
    const itemsView = viewItems % 2 === 0 ? viewItems / 2 : (viewItems - 1) / 2;
-   
 	const itemHeight = prop.options?.itemsHeight || 40;
+   
 	const daysNameWheel = prop.options?.daysNameWheels === false ? false : true;
 	const daysNameFormat = prop.options?.daysNameFormat || "DDDD, MMM DD";
 	const timeFormat = prop.options?.timeFormat || "hh:mm A";
@@ -40,15 +44,7 @@ const TimePicker = (prop: ITimePicker) => {
 	const showTime = prop.options?.showTime === false ? false : true;
 	const showDate = prop.options?.showDate === false ? false : true;
 
-	const splitTimeFormat = (format: string): string[] => {
-		const regex = /(HH|H|hh|h|mm|m|ss|A|a)/g;
-		const matches = format.match(regex);
-		const remaining = format.replace(regex, "").trim();
-		const remainingParts = remaining
-			? remaining.split(" ").filter((part) => part)
-			: [];
-		return matches ? [...matches, ...remainingParts] : remainingParts;
-	};
+	
 
 	const getWeelsArray = () => {
 		const wheelArray = new Array();
@@ -101,7 +97,7 @@ const TimePicker = (prop: ITimePicker) => {
                wheelArray.push({
                   onGetItems: getMinutes,
                   textFormat: timeWheel,
-                  textItemStep: 15,
+                  textItemStep: minutesStep,
                });
             else if (timeWheel === "A" && timeFormat.includes("h"))
                wheelArray.push({

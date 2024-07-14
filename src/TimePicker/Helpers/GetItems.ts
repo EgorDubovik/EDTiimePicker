@@ -164,7 +164,7 @@ const getAmPm = (date: Date) => {
 		},
 		{
 			text: "PM",
-			value: hours <= 12 ? new Date(pm.setHours(hours + 12)) : pm,
+			value: hours < 12 ? new Date(pm.setHours(hours + 12)) : pm,
 			isSelected: index === 1,
 		},
 	];

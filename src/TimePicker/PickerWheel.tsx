@@ -37,7 +37,6 @@ const PickerWheel = (props: IPickerWheel) => {
       return Math.round(translateY / itemHeight) * -1 + itemsView
    });
 	const [fixedIndex, setFixedIndex] = useState(indexTranslateY);
-
 	const [marginTop, setMarginTop] = useState(0);
 	const [marginTopIndex, setMarginTopIndex] = useState(0);
 	const itemsRef = useRef<HTMLDivElement>(null);
@@ -48,6 +47,10 @@ const PickerWheel = (props: IPickerWheel) => {
 		if (index < 0 || index >= items.length) return currenDate;
 		return items[index].value;
 	};
+   
+   const getItems = (date: Date) => {
+      return onGetItems(date, textFormat, textItemStep);
+   }
 
    const returnValue = () => {
       if(updateDate) updateDate(getValue());
@@ -55,14 +58,12 @@ const PickerWheel = (props: IPickerWheel) => {
    useEffect(() => {
       const newDate = new Date(props.currentDate);
       setCurrentDate(newDate);
-      setItems(onGetItems(newDate, textFormat, textItemStep));
+      setItems(getItems(newDate));
    }, [props.currentDate]);
 
 	useEffect(() => {
       returnValue();
-      const value = getValue();
-      const items = onGetItems(value, textFormat, textItemStep);
-      setItems(items);
+      setItems(getItems(getValue()));
 		const newMarginTopIndex = getMarginTopIndex();   
       if(isLoop){
          setMarginTopIndex(newMarginTopIndex);

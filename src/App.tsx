@@ -5,11 +5,11 @@ function App() {
 	return (
 		<>
 			<div className="main-container">
-				<TimePicker 
-               options={{ 
-                  timeFormat: "hh:mm A",
-               }}
-            />
+				<div className="">
+               <TimePicker 
+                  currentDate={'2021-09-01 11:55:00'}
+               />
+            </div>
 			</div>
 		</>
 	);
