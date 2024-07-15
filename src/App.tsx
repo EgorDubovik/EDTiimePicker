@@ -12,6 +12,7 @@ function App() {
                   currentDate={date}
                   options={{
                      daysNameWheels: false,
+                     viewItems: 5,
                   }}
                   onDateChange={(date: Date) => {
                      setDate(date.toLocaleString());

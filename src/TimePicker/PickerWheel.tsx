@@ -144,13 +144,17 @@ const PickerWheel = (props: IPickerWheel) => {
 	};
 
    const handleClick = (ind: number) => {
-      const indexDiff = fixedIndex - ind;
-      if(isLoop)
-         setTranslateY((prev) => 
-            updateTranslateY(prev + indexDiff * itemHeight)
-         );
-      else 
-         setTranslateY(itemHeight * (ind *-1+1));
+      const diff = indexTranslateY - marginTopIndex - ind
+      setTranslateY((prev) => 
+         updateTranslateY(prev + diff * itemHeight)
+      );
+      // const indexDiff = fixedIndex - ind;
+      // if(isLoop)
+      //    setTranslateY((prev) => 
+      //       updateTranslateY(prev + indexDiff * itemHeight)
+      //    );
+      // else 
+      //    setTranslateY(itemHeight * (ind *-itemsView+1)); // fix this
    }
 
 	useEffect(() => {
