@@ -2,12 +2,20 @@ import { useState } from "react";
 import TimePicker from "./TimePicker/index";
 
 function App() {
+   const [date, setDate] = useState('2021-09-01 11:55:00');
 	return (
 		<>
 			<div className="main-container">
+            <div style={{ marginBottom:"50px",textAlign:"center" }}>{date.toLocaleString()}</div>
 				<div className="">
                <TimePicker 
-                  currentDate={'2021-09-01 11:55:00'}
+                  currentDate={date}
+                  options={{
+                     daysNameWheels: false,
+                  }}
+                  onDateChange={(date: Date) => {
+                     setDate(date.toLocaleString());
+                  }}
                />
             </div>
 			</div>

@@ -25,6 +25,7 @@ interface ITimePicker {
 		showDate?: boolean;
 		daysNameWheels?: boolean;
 	};
+   onDateChange?: (date: Date) => void;
 }
 
 const TimePicker = (prop: ITimePicker) => {
@@ -43,6 +44,7 @@ const TimePicker = (prop: ITimePicker) => {
 	const dateWheelsFormat = prop.options?.dateWheelsFormat || "MMMM|DD|YYYY";
 	const showTime = prop.options?.showTime === false ? false : true;
 	const showDate = prop.options?.showDate === false ? false : true;
+   const onDateChange = prop.onDateChange || null;
 
 	
 
@@ -113,7 +115,7 @@ const TimePicker = (prop: ITimePicker) => {
 	const wheelArray = getWeelsArray();
 	
    useEffect(() => {
-      console.log(currenDate);
+      if(onDateChange) onDateChange(currenDate);
    }, [currenDate]);
 
    const updateCurrentDate = (date: Date) => {
