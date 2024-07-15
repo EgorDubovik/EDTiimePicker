@@ -47,7 +47,7 @@ const PickerWheel = (props: IPickerWheel) => {
 		if (index < 0 || index >= items.length) return currenDate;
 		return items[index].value;
 	};
-   
+
    const getItems = (date: Date) => {
       return onGetItems(date, textFormat, textItemStep);
    }
@@ -143,6 +143,16 @@ const PickerWheel = (props: IPickerWheel) => {
 		}
 	};
 
+   const handleClick = (ind: number) => {
+      const indexDiff = fixedIndex - ind;
+      if(isLoop)
+         setTranslateY((prev) => 
+            updateTranslateY(prev + indexDiff * itemHeight)
+         );
+      else 
+         setTranslateY(itemHeight * (ind *-1+1));
+   }
+
 	useEffect(() => {
 		itemsRef.current?.addEventListener("wheel", handleWheel, {
 			passive: false,
@@ -172,6 +182,7 @@ const PickerWheel = (props: IPickerWheel) => {
 				{items.map((item: any, index: number) => (
 					<div
 						key={index}
+                  onClick={() => handleClick(index)}
 						className={`picker-wheel-item ${item.isSelected && "active"}`}
 						style={{ height: itemHeight }}
 					>
