@@ -9,7 +9,7 @@ interface IPickerWheel {
    updateDate: (date: Date) => void;
 	textFormat: string | null;
 	textItemStep: number;
-	currentDate: Date | string;
+	currentDate: Date;
 	itemsView: number;
 	itemHeight: number;
 	isLoop?: boolean;
@@ -20,15 +20,16 @@ const PickerWheel = (props: IPickerWheel) => {
    
 	const onGetItems = props.onGetItems;
    const updateDate = props.updateDate;
-	const textFormat = props.textFormat || null;
-	const textItemStep = props.textItemStep || 1;
+	const textFormat = props.textFormat;
+	const textItemStep = props.textItemStep;
 	const isLoop = props.isLoop === false ? false : true;
-	const [currenDate, setCurrentDate] = useState(new Date(props.currentDate) || new Date());
+   const borderColor = props.borderColor;
+	const [currenDate, setCurrentDate] = useState<Date>(props.currentDate);
 	const [items, setItems] = useState(
 		onGetItems(currenDate, textFormat, textItemStep)
 	);
-   const itemsView = props.itemsView || 1;
-	const itemHeight = props.itemHeight || 40;
+   const itemsView = props.itemsView;
+	const itemHeight = props.itemHeight;
 
 	const [translateY, setTranslateY] = useState(() =>{
       if(isLoop)
@@ -43,7 +44,7 @@ const PickerWheel = (props: IPickerWheel) => {
 	const [marginTopIndex, setMarginTopIndex] = useState(0);
 	const itemsRef = useRef<HTMLDivElement>(null);
 	const isDraging = useRef(false);
-   const borderColor = props.borderColor || "#2867f9";
+   
 
 	const getValue = () => {
 		const index = indexTranslateY - marginTopIndex;

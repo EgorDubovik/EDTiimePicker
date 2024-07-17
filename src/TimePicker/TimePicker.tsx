@@ -29,24 +29,38 @@ interface ITimePicker {
    onDateChange?: (date: Date) => void;
 }
 
+const defaultOptions = {
+   viewItems: 3,
+   itemsHeight: 40,
+   daysNameFormat: "DDDD, MMM DD",
+   timeFormat: "hh:mm A",
+   dateWheelsFormat: "MMMM|DD|YYYY",
+   minutesStep: 15,
+   showTime: true,
+   showDate: true,
+   daysNameWheels: true,
+   borderColor: "#2867f9",
+   onDataChange: null,
+};
+
 const TimePicker = (prop: ITimePicker) => {
 
    const minutesStep = prop.options?.minutesStep || 15;
 	const [currenDate, setCurrentDate] = useState(
       nomrolizeDate(new Date(prop.currentDate || new Date()), minutesStep)
 	);
-	const viewItems = prop.options?.viewItems || 3;
+	const viewItems = prop.options?.viewItems || defaultOptions.viewItems;
    const itemsView = viewItems % 2 === 0 ? viewItems / 2 : (viewItems - 1) / 2;
-	const itemHeight = prop.options?.itemsHeight || 40;
+	const itemHeight = prop.options?.itemsHeight || defaultOptions.itemsHeight;
    
-	const daysNameWheel = prop.options?.daysNameWheels === false ? false : true;
-	const daysNameFormat = prop.options?.daysNameFormat || "DDDD, MMM DD";
-	const timeFormat = prop.options?.timeFormat || "hh:mm A";
-	const dateWheelsFormat = prop.options?.dateWheelsFormat || "MMMM|DD|YYYY";
-	const showTime = prop.options?.showTime === false ? false : true;
-	const showDate = prop.options?.showDate === false ? false : true;
-   const onDateChange = prop.onDateChange || null;
-   const borderColor = prop.options?.borderColor || "#2867f9";
+	const daysNameWheel = prop.options?.daysNameWheels === false ? false : defaultOptions.daysNameWheels;
+	const daysNameFormat = prop.options?.daysNameFormat || defaultOptions.daysNameFormat;
+	const timeFormat = prop.options?.timeFormat || defaultOptions.timeFormat;
+	const dateWheelsFormat = prop.options?.dateWheelsFormat || defaultOptions.dateWheelsFormat;
+	const showTime = prop.options?.showTime === false ? false : defaultOptions.showTime;
+	const showDate = prop.options?.showDate === false ? false : defaultOptions.showDate;
+   const onDateChange = prop.onDateChange || defaultOptions.onDataChange;
+   const borderColor = prop.options?.borderColor || defaultOptions.borderColor;
 
 	const getWeelsArray = () => {
 		const wheelArray = new Array();
