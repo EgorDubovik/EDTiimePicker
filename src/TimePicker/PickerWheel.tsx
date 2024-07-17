@@ -151,6 +151,37 @@ const PickerWheel = (props: IPickerWheel) => {
       );
    }
 
+   // Touch Events
+	const handleTouchStart = (e: any) => {
+		isDraging.current = true;
+		startY.current = e.touches[0].clientY;
+		if (itemsRef.current) itemsRef.current.style.transition = 'transform 0s ease-out';
+		document.addEventListener('touchmove', handleTouchMove, { passive: false });
+		document.addEventListener('touchend', handleTouchEnd);
+	};
+
+	const handleTouchMove = (e: any) => {
+		if (!isDraging.current) return;
+		if (e.cancelable && typeof e.preventDefault === 'function') {
+			e.preventDefault(); // Prevent default scrolling behavior if possible
+		}
+		const diff = e.touches[0].clientY - startY.current;
+		setTranslateY((prev) => 
+         updateTranslateY(prev + diff)
+      );
+		startY.current = e.touches[0].clientY;
+	};
+
+	const handleTouchEnd = () => {
+		isDraging.current = false;
+		setTranslateY((prev) =>
+         updateTranslateY(Math.round(prev / itemHeight) * itemHeight)
+      );
+		if (itemsRef.current) itemsRef.current.style.transition = 'transform 0.5s ease-out';
+		document.removeEventListener('touchmove', handleTouchMove);
+		document.removeEventListener('touchend', handleTouchEnd);
+	};
+
 	useEffect(() => {
 		itemsRef.current?.addEventListener("wheel", handleWheel, {
 			passive: false,
@@ -158,6 +189,8 @@ const PickerWheel = (props: IPickerWheel) => {
 		return () => {
 			document.removeEventListener("mousemove", handleMouseMove);
 			document.removeEventListener("mouseup", handleMouseUp);
+         document.removeEventListener("touchmove", handleTouchMove);
+         document.removeEventListener("touchend", handleTouchEnd);
 		};
 	}, []);
 
@@ -170,6 +203,7 @@ const PickerWheel = (props: IPickerWheel) => {
 			<div
 				className="picker-wheel-items"
 				onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
 				ref={itemsRef}
 				style={{
 					transform: `translateY(${translateY}px)`,
