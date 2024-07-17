@@ -13,6 +13,7 @@ interface IPickerWheel {
 	itemsView: number;
 	itemHeight: number;
 	isLoop?: boolean;
+   borderColor?: string;
 }
 
 const PickerWheel = (props: IPickerWheel) => {
@@ -42,6 +43,7 @@ const PickerWheel = (props: IPickerWheel) => {
 	const [marginTopIndex, setMarginTopIndex] = useState(0);
 	const itemsRef = useRef<HTMLDivElement>(null);
 	const isDraging = useRef(false);
+   const borderColor = props.borderColor || "#2867f9";
 
 	const getValue = () => {
 		const index = indexTranslateY - marginTopIndex;
@@ -198,7 +200,7 @@ const PickerWheel = (props: IPickerWheel) => {
 		<div className="picker-wheel">
 			<div
 				className="picker-wheel-window"
-				style={{ height: itemHeight, borderColor: "#2867f9" }}
+				style={{ height: itemHeight, borderColor: borderColor }}
 			></div>
 			<div
 				className="picker-wheel-items"

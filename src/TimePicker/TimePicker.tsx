@@ -24,6 +24,7 @@ interface ITimePicker {
 		showTime?: boolean;
 		showDate?: boolean;
 		daysNameWheels?: boolean;
+      borderColor?: string;
 	};
    onDateChange?: (date: Date) => void;
 }
@@ -45,8 +46,7 @@ const TimePicker = (prop: ITimePicker) => {
 	const showTime = prop.options?.showTime === false ? false : true;
 	const showDate = prop.options?.showDate === false ? false : true;
    const onDateChange = prop.onDateChange || null;
-
-	
+   const borderColor = prop.options?.borderColor || "#2867f9";
 
 	const getWeelsArray = () => {
 		const wheelArray = new Array();
@@ -138,6 +138,7 @@ const TimePicker = (prop: ITimePicker) => {
 						itemsView={itemsView}
 						itemHeight={itemHeight}
                   isLoop={item.isLoop}
+                  borderColor={borderColor}
 					/>
 					{(item.textFormat === "hh" || item.textFormat === "HH") &&
 						index < wheelArray.length-1 && (
