@@ -16,7 +16,7 @@ interface IPickerWheel {
 }
 
 const PickerWheel = (props: IPickerWheel) => {
-   console.log('load wheel');
+   
 	const onGetItems = props.onGetItems;
    const updateDate = props.updateDate;
 	const textFormat = props.textFormat || null;

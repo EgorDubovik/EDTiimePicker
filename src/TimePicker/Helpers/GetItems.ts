@@ -1,6 +1,7 @@
 import { formatDate } from "./FormatDate";
 
-const getYears = (date: Date, format = "YYYY") => {
+const getYears = (date: Date, format: string) => {
+	format = format ?? "YYYY";
 	let currentYear = date.getFullYear();
 	let years = [];
 	for (let i = currentYear - 15; i < currentYear + 15; i++) {
@@ -18,7 +19,8 @@ const getYears = (date: Date, format = "YYYY") => {
 	return years;
 };
 
-const getMonths = (date: Date, format = "MMMM") => {
+const getMonths = (date: Date, format: string) => {
+	format = format ?? "MMMM";
 	let currentMonth = date.getMonth();
 	let months = [];
 	for (let i = -15; i < 15; i++) {
@@ -41,7 +43,8 @@ const getMonths = (date: Date, format = "MMMM") => {
 	return months;
 };
 
-const getDays = (date: Date, format = "DD") => {
+const getDays = (date: Date, format: string) => {
+	format = format ?? "DD";
 	let currentMonth = date.getMonth();
 	let currentYear = date.getFullYear();
 	let currentDay = date.getDate();
@@ -130,9 +133,13 @@ const getMinutes = (date: Date, format: string, step = 15) => {
 const getDaysNameArray = (date: Date, format: string) => {
 	format = format ?? "DDD, MMM DD";
 	const today = new Date();
+	const hours = date.getHours();
+	const minutes = date.getMinutes();
 	const datesArray = [];
 	for (let i = -15; i < 15; i++) {
 		var newDate = new Date(date.getTime() + i * 24 * 60 * 60 * 1000);
+		newDate.setHours(hours);
+		newDate.setMinutes(minutes);
 		const result =
 			newDate.getDate() === today.getDate() &&
 			newDate.getMonth() === today.getMonth() &&
