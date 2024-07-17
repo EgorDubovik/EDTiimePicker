@@ -16,6 +16,7 @@ interface IPickerWheel {
 }
 
 const PickerWheel = (props: IPickerWheel) => {
+   console.log('load wheel');
 	const onGetItems = props.onGetItems;
    const updateDate = props.updateDate;
 	const textFormat = props.textFormat || null;
@@ -148,13 +149,6 @@ const PickerWheel = (props: IPickerWheel) => {
       setTranslateY((prev) => 
          updateTranslateY(prev + diff * itemHeight)
       );
-      // const indexDiff = fixedIndex - ind;
-      // if(isLoop)
-      //    setTranslateY((prev) => 
-      //       updateTranslateY(prev + indexDiff * itemHeight)
-      //    );
-      // else 
-      //    setTranslateY(itemHeight * (ind *-itemsView+1)); // fix this
    }
 
 	useEffect(() => {

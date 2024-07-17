@@ -2,7 +2,7 @@ import { useState } from "react";
 import TimePicker from "./TimePicker/index";
 
 function App() {
-   const [date, setDate] = useState('2021-09-01 11:55:00');
+   const [date, setDate] = useState('2021-10-05 13:00');
 	return (
 		<>
 			<div className="main-container">
@@ -10,12 +10,11 @@ function App() {
 				<div className="">
                <TimePicker 
                   currentDate={date}
-                  options={{
-                     daysNameWheels: false,
-                     viewItems: 5,
-                  }}
+                  options={{ 
+                     showTime: false,
+                   }}
                   onDateChange={(date: Date) => {
-                     setDate(date.toLocaleString());
+                     //setDate(date.toLocaleString());
                   }}
                />
             </div>
