@@ -11,8 +11,9 @@ function App() {
                <TimePicker 
                   currentDate={date}
                   options={{ 
-                     showTime: true,
-                   }}
+                     
+                     
+                  }}
                   onDateChange={(date: Date) => {
                      setDate(date.toLocaleString());
                   }}
