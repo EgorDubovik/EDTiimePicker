@@ -155,7 +155,6 @@ const getDaysNameArray = (date: Date, format: string) => {
 				newDate.getFullYear() === date.getFullYear(),
 		});
 	}
-	console.log(datesArray);
 	return datesArray;
 };
 

@@ -44,8 +44,8 @@ const defaultOptions = {
 };
 
 const TimePicker = (prop: ITimePicker) => {
-
-   const minutesStep = prop.options?.minutesStep || 15;
+   // TODO: Add aditional class option
+   const minutesStep = prop.options?.minutesStep || defaultOptions.minutesStep;
 	const [currenDate, setCurrentDate] = useState(
       nomrolizeDate(new Date(prop.currentDate || new Date()), minutesStep)
 	);

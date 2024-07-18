@@ -44,6 +44,8 @@ const PickerWheel = (props: IPickerWheel) => {
 	const [marginTopIndex, setMarginTopIndex] = useState(0);
 	const itemsRef = useRef<HTMLDivElement>(null);
 	const isDraging = useRef(false);
+   const hasDragged = useRef(false);
+   const draggDelta = useRef(0);
    
 
 	const getValue = () => {
@@ -104,6 +106,8 @@ const PickerWheel = (props: IPickerWheel) => {
 
 	const startY = useRef(0);
 	const handleMouseDown = (e: any) => {
+      hasDragged.current = false;
+      draggDelta.current = 0;
 		isDraging.current = true;
 		startY.current = e.clientY;
 		if (itemsRef.current)
@@ -115,6 +119,8 @@ const PickerWheel = (props: IPickerWheel) => {
 	const handleMouseMove = (e: any) => {
 		if (!isDraging.current) return;
 		const diff = e.clientY - startY.current;
+      draggDelta.current += diff;
+      if(draggDelta.current > 10 || draggDelta.current < -10) hasDragged.current = true;
       setTranslateY((prev) => 
          updateTranslateY(prev + diff)
       );
@@ -122,6 +128,7 @@ const PickerWheel = (props: IPickerWheel) => {
 	};
 
 	const handleMouseUp = (e: any) => {
+      console.log('Mouse Up');
 		isDraging.current = false;
       setTranslateY((prev) =>
          updateTranslateY(Math.round(prev / itemHeight) * itemHeight)
@@ -148,6 +155,7 @@ const PickerWheel = (props: IPickerWheel) => {
 	};
 
    const handleClick = (ind: number) => {
+      if(hasDragged.current) return;
       const diff = indexTranslateY - marginTopIndex - ind
       setTranslateY((prev) => 
          updateTranslateY(prev + diff * itemHeight)
