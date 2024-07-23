@@ -1,16 +1,8 @@
 import "./style.css";
 import PickerWheel from "./PickerWheel";
-import {
-	getDays,
-	getHours,
-	getMinutes,
-	getMonths,
-	getYears,
-	getDaysNameArray,
-   getAmPm
-} from "./Helpers/GetItems";
-import { nomrolizeDate, splitTimeFormat } from "./Helpers/FormatDate";
+import { nomrolizeDate } from "./Helpers/FormatDate";
 import React, { useEffect, useState } from "react";
+import useGetWheels from "./Hooks/useGetWheels";
 
 interface ITimePicker {
 	currentDate?: Date | string | null;
@@ -65,72 +57,6 @@ const TimePicker = (prop: ITimePicker) => {
    const borderColor = prop.options?.borderColor || defaultOptions.borderColor;
    const addClass = prop.options?.addClass || defaultOptions.addClass;
 
-	const getWeelsArray = () => {
-		const wheelArray = new Array();
-		if (showDate) {
-			if (daysNameWheel)
-				wheelArray.push({
-					onGetItems: getDaysNameArray,
-					textFormat: daysNameFormat,
-				});
-			else {
-				const dateWheels = dateWheelsFormat.split("|");
-				dateWheels.forEach((dateWheel) => {
-					if (
-						dateWheel === "MMMM" ||
-						dateWheel === "MMM" ||
-						dateWheel === "MM" ||
-						dateWheel === "M"
-					)
-						wheelArray.push({
-							onGetItems: getMonths,
-							textFormat: dateWheel,
-						});
-					else if (
-						dateWheel === "DDD" ||
-						dateWheel === "DD" ||
-						dateWheel === "D"
-					)
-						wheelArray.push({
-							onGetItems: getDays,
-							textFormat: dateWheel,
-						});
-					else if (dateWheel === "YYYY" || dateWheel === "YY")
-						wheelArray.push({
-							onGetItems: getYears,
-							textFormat: dateWheel,
-						});
-				});
-			}
-		}
-
-		if (showTime) {
-			const timeWheels = splitTimeFormat(timeFormat);
-         timeWheels.forEach((timeWheel) => {
-            if (timeWheel === "HH" || timeWheel === "hh" || timeWheel === "H" || timeWheel === "h")
-               wheelArray.push({
-                  onGetItems: getHours,
-                  textFormat: timeWheel,
-               });
-            else if (timeWheel === "mm" || timeWheel === "m")
-               wheelArray.push({
-                  onGetItems: getMinutes,
-                  textFormat: timeWheel,
-                  textItemStep: minutesStep,
-               });
-            else if (timeWheel === "A" && timeFormat.includes("h"))
-               wheelArray.push({
-                  onGetItems: getAmPm,
-                  isLoop: false,
-               });
-         });
-		}
-
-		return wheelArray;
-	};
-
-	const wheelArray = getWeelsArray();
-	
    useEffect(() => {
       if(onDateChange) onDateChange(currenDate);
    }, [currenDate]);
@@ -138,6 +64,8 @@ const TimePicker = (prop: ITimePicker) => {
    const updateCurrentDate = (date: Date) => {
       setCurrentDate(date);
    }
+
+	const wheelArray = useGetWheels(showDate, showTime, daysNameWheel, daysNameFormat, timeFormat, dateWheelsFormat, minutesStep);
 
 	return (
 		<div

@@ -8,16 +8,7 @@ function App() {
 			<div className="main-container">
             <div style={{ marginBottom:"50px",textAlign:"center" }}>{date.toLocaleString()}</div>
 				<div className="">
-               <TimePicker 
-                  currentDate={date}
-                  options={{ 
-                     
-                     
-                  }}
-                  onDateChange={(date: Date) => {
-                     setDate(date.toLocaleString());
-                  }}
-               />
+               <TimePicker />
             </div>
 			</div>
 		</>
