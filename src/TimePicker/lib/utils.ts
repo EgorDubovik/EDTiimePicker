@@ -1,7 +1,7 @@
 import { getDays, getDaysNameArray, getHours, getMinutes, getMonths, getYears, getAmPm } from "../Helpers/GetItems";
 import { splitTimeFormat } from "../Helpers/FormatDate";
 
-export default function useGetWheels(showDate: boolean, showTime: boolean, daysNameWheel: boolean, daysNameFormat: string, timeFormat: string, dateWheelsFormat: string, minutesStep: number) {
+export function getWheels(showDate: boolean, showTime: boolean, daysNameWheel: boolean, daysNameFormat: string, timeFormat: string, dateWheelsFormat: string, minutesStep: number): any[] {
    const wheelArray = new Array();
    if (showDate) {
       if (daysNameWheel)
@@ -63,4 +63,13 @@ export default function useGetWheels(showDate: boolean, showTime: boolean, daysN
    }
 
    return wheelArray;
+}
+
+export function getIndexTranslateY(translateY: number, itemHeight: number, itemsView: number, isLoop: boolean): number {
+   if (!isLoop) {
+      let newCurrentIndex = Math.round(Number(translateY) / itemHeight) - itemsView;
+      newCurrentIndex = newCurrentIndex < 0 ? 1 : newCurrentIndex;
+      return newCurrentIndex;
+   }
+   return Math.round(Number(translateY) / itemHeight) * -1 + itemsView;
 }

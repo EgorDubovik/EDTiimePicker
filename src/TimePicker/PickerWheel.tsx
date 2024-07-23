@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { getIndexTranslateY } from "./lib/utils";
 
 interface IPickerWheel {
 	onGetItems: (
@@ -17,40 +18,37 @@ interface IPickerWheel {
 }
 
 const PickerWheel = (props: IPickerWheel) => {
-   
 	const onGetItems = props.onGetItems;
    const updateDate = props.updateDate;
 	const textFormat = props.textFormat;
 	const textItemStep = props.textItemStep;
 	const isLoop = props.isLoop === false ? false : true;
    const borderColor = props.borderColor;
+	const itemsView = props.itemsView;
+	const itemHeight = props.itemHeight;
 	const [currenDate, setCurrentDate] = useState<Date>(props.currentDate);
 	const [items, setItems] = useState(
 		onGetItems(currenDate, textFormat, textItemStep)
 	);
-   const itemsView = props.itemsView;
-	const itemHeight = props.itemHeight;
 
+	const itemsRef = useRef<HTMLDivElement>(null);
 	const [translateY, setTranslateY] = useState(() =>{
       if(isLoop)
          return (items.length / 2 - itemsView) * -itemHeight
       return currenDate.getHours() < 12 ? itemHeight * itemsView : itemHeight * (itemsView -1);
    });
-	const [indexTranslateY, setIndexTranslateY] = useState( () =>{
-      return Math.round(translateY / itemHeight) * -1 + itemsView
-   });
-	const [fixedIndex, setFixedIndex] = useState(indexTranslateY);
-	const [marginTop, setMarginTop] = useState(0);
-	const [marginTopIndex, setMarginTopIndex] = useState(0);
-	const itemsRef = useRef<HTMLDivElement>(null);
-	const isDraging = useRef(false);
-   const hasDragged = useRef(false);
-   const draggDelta = useRef(0);
-   
+
+	const indexTranslateY = getIndexTranslateY(translateY, itemHeight, itemsView, isLoop);
+	const [oldIndexTranslateY, setoldIndexTranslateY] = useState(indexTranslateY);
+	const marginTopIndex = isLoop ? indexTranslateY - Math.round(items.length / 2) : 0;
+	const marginTop = isLoop ?  marginTopIndex * itemHeight : 0;
+	
 
 	const getValue = () => {
-		const index = indexTranslateY - marginTopIndex;
-		if (index < 0 || index >= items.length) return currenDate;
+		const index = 2 * indexTranslateY - marginTopIndex - oldIndexTranslateY;
+		setoldIndexTranslateY(indexTranslateY);
+		if(index < 0) return items[0].value;
+		if(index >= items.length) return items[items.length - 1].value;
 		return items[index].value;
 	};
 
@@ -70,29 +68,7 @@ const PickerWheel = (props: IPickerWheel) => {
 	useEffect(() => {
       returnValue();
       setItems(getItems(getValue()));
-		const newMarginTopIndex = getMarginTopIndex();   
-      if(isLoop){
-         setMarginTopIndex(newMarginTopIndex);
-         setMarginTop(newMarginTopIndex * itemHeight);
-      }
 	}, [indexTranslateY]);
-
-	useEffect(() => {
-		setIndexTranslateY(getIndexTranslateY());
-	}, [translateY]);
-
-	function getMarginTopIndex() {
-		return indexTranslateY - fixedIndex;
-	}
-	const getIndexTranslateY = () => {
-		if (!isLoop) {
-			let newCurrentIndex = Math.round(translateY / itemHeight) - itemsView;
-			newCurrentIndex = newCurrentIndex < 0 ? 1 : newCurrentIndex;
-			return newCurrentIndex;
-		}
-		return Math.round(translateY / itemHeight) * -1 + itemsView;
-	};
-
 
    const updateTranslateY = (newTranslateY:number) => {
       if (!isLoop) {
@@ -105,6 +81,10 @@ const PickerWheel = (props: IPickerWheel) => {
    }
 
 	const startY = useRef(0);
+	const isDraging = useRef(false);
+   const hasDragged = useRef(false);
+   const draggDelta = useRef(0);
+   
 	const handleMouseDown = (e: any) => {
       hasDragged.current = false;
       draggDelta.current = 0;
@@ -128,7 +108,6 @@ const PickerWheel = (props: IPickerWheel) => {
 	};
 
 	const handleMouseUp = (e: any) => {
-      console.log('Mouse Up');
 		isDraging.current = false;
       setTranslateY((prev) =>
          updateTranslateY(Math.round(prev / itemHeight) * itemHeight)
@@ -204,6 +183,7 @@ const PickerWheel = (props: IPickerWheel) => {
          document.removeEventListener("touchend", handleTouchEnd);
 		};
 	}, []);
+	
 
 	return (
 		<div className="picker-wheel">

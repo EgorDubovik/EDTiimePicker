@@ -1,8 +1,8 @@
 import "./style.css";
 import PickerWheel from "./PickerWheel";
 import { nomrolizeDate } from "./Helpers/FormatDate";
-import React, { useEffect, useState } from "react";
-import useGetWheels from "./Hooks/useGetWheels";
+import { useState, Fragment } from "react";
+import { getWheels } from "./lib/utils";
 
 interface ITimePicker {
 	currentDate?: Date | string | null;
@@ -38,7 +38,7 @@ const defaultOptions = {
 };
 
 const TimePicker = (prop: ITimePicker) => {
-   // TODO: Add aditional class option
+	console.log('TimePicker');
    const minutesStep = prop.options?.minutesStep || defaultOptions.minutesStep;
 	const [currenDate, setCurrentDate] = useState(
       nomrolizeDate(new Date(prop.currentDate || new Date()), minutesStep)
@@ -57,15 +57,12 @@ const TimePicker = (prop: ITimePicker) => {
    const borderColor = prop.options?.borderColor || defaultOptions.borderColor;
    const addClass = prop.options?.addClass || defaultOptions.addClass;
 
-   useEffect(() => {
-      if(onDateChange) onDateChange(currenDate);
-   }, [currenDate]);
-
    const updateCurrentDate = (date: Date) => {
       setCurrentDate(date);
+		if(onDateChange) onDateChange(date);
    }
 
-	const wheelArray = useGetWheels(showDate, showTime, daysNameWheel, daysNameFormat, timeFormat, dateWheelsFormat, minutesStep);
+	const wheelArray = getWheels(showDate, showTime, daysNameWheel, daysNameFormat, timeFormat, dateWheelsFormat, minutesStep);
 
 	return (
 		<div
@@ -73,7 +70,7 @@ const TimePicker = (prop: ITimePicker) => {
 			style={{ height: itemHeight * viewItems + "px" }}
 		>
 			{wheelArray.map((item, index) => (
-				<React.Fragment key={index}>
+				<Fragment key={index}>
 					<PickerWheel
 						onGetItems={item.onGetItems}
                   updateDate={updateCurrentDate}
@@ -89,7 +86,7 @@ const TimePicker = (prop: ITimePicker) => {
 						index < wheelArray.length-1 && (
 							<div className="picker-divider">:</div>
 						)}
-				</React.Fragment>
+				</Fragment>
 			))}
 		</div>
 	);
