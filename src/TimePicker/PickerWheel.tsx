@@ -1,21 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { getIndexTranslateY } from "./lib/utils";
-
-interface IPickerWheel {
-	onGetItems: (
-		currentDate: Date | string,
-		textFormat?: string | null,
-		textItemStep?: number
-	) => any;
-   updateDate: (date: Date) => void;
-	textFormat: string | null;
-	textItemStep: number;
-	currentDate: Date;
-	itemsView: number;
-	itemHeight: number;
-	isLoop?: boolean;
-   borderColor?: string;
-}
+import { IPickerWheel } from "./types";
 
 const PickerWheel = (props: IPickerWheel) => {
 	const onGetItems = props.onGetItems;

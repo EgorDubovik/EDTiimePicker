@@ -15,3 +15,19 @@ export interface ITimePicker {
 	};
    onDateChange?: (date: Date) => void;
 }
+
+export interface IPickerWheel {
+	onGetItems: (
+		currentDate: Date | string,
+		textFormat?: string | null,
+		textItemStep?: number
+	) => any;
+   updateDate: (date: Date) => void;
+	textFormat: string | null;
+	textItemStep: number;
+	currentDate: Date;
+	itemsView: number;
+	itemHeight: number;
+	isLoop?: boolean;
+   borderColor?: string;
+}
