@@ -12,6 +12,7 @@ export interface ITimePicker {
 		daysNameWheels?: boolean;
       borderColor?: string;
       addClass?: string;
+		textAlign?: "left" | "center" | "right";
 	};
    onDateChange?: (date: Date) => void;
 }
@@ -30,4 +31,5 @@ export interface IPickerWheel {
 	itemHeight: number;
 	isLoop?: boolean;
    borderColor?: string;
+	textAlign?: "left" | "center" | "right";
 }

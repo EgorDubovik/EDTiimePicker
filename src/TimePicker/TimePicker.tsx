@@ -1,7 +1,7 @@
 import "./style.css";
+import React, { useState, Fragment } from "react";
 import PickerWheel from "./PickerWheel";
 import { nomrolizeDate } from "./Helpers/FormatDate";
-import { useState, Fragment } from "react";
 import { getWheels } from "./lib/utils";
 import { ITimePicker } from "./types";
 
@@ -17,6 +17,7 @@ const DEFAULT_DAYS_NAME_WHEELS = true;
 const DEFAULT_BORDER_COLOR = "#2867f9";
 const DEFAULT_ADD_CLASS = "";
 const DEFAULT_ON_DATA_CHANGE = null;
+const DEFAULT_TEXT_ALIGN = "left";
 
 const TimePicker = (prop: ITimePicker) => {
 
@@ -33,6 +34,8 @@ const TimePicker = (prop: ITimePicker) => {
    const onDateChange = prop.onDateChange || DEFAULT_ON_DATA_CHANGE;
    const borderColor = prop.options?.borderColor || DEFAULT_BORDER_COLOR;
    const addClass = prop.options?.addClass || DEFAULT_ADD_CLASS;
+	const textAlign = prop.options?.textAlign || DEFAULT_TEXT_ALIGN;
+
 	const [currenDate, setCurrentDate] = useState(
       nomrolizeDate(new Date(prop.currentDate || new Date()), minutesStep)
 	);
@@ -60,6 +63,7 @@ const TimePicker = (prop: ITimePicker) => {
 						itemHeight={itemHeight}
                   isLoop={item.isLoop}
                   borderColor={borderColor}
+						textAlign={textAlign}
 					/>
 					{(item.textFormat === "hh" || item.textFormat === "HH") &&
 						index < wheelArray.length-1 && (

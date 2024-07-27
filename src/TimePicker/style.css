@@ -44,3 +44,13 @@
    display: flex;
    padding: 0 10px;
 }
+
+.text-right{
+   justify-content: right;
+}
+.text-left{
+   justify-content: left;
+}
+.text-center{
+   justify-content: center;
+}

@@ -12,6 +12,7 @@ const PickerWheel = (props: IPickerWheel) => {
 	const borderColor = props.borderColor;
 	const itemsView = props.itemsView;
 	const itemHeight = props.itemHeight;
+	const textAlign = props.textAlign || "left";
 	const [currenDate, setCurrentDate] = useState<Date>(props.currentDate);
 	const [items, setItems] = useState(
 		onGetItems(currenDate, textFormat, textItemStep)
@@ -93,7 +94,7 @@ const PickerWheel = (props: IPickerWheel) => {
 					<div
 						key={index}
 						onClick={() => handleClick(index)}
-						className={`picker-wheel-item ${item.isSelected && "active"}`}
+						className={`picker-wheel-item text-${textAlign} ${item.isSelected && "active"}`}
 						style={{ height: itemHeight }}
 					>
 						{item.text}
